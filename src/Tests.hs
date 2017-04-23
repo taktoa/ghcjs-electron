@@ -3,13 +3,16 @@
 module Main where
 
 import           Data.JSString
-import qualified GHCJS.Electron.Window as Electron
+import qualified GHCJS.Electron.BrowserWindowProxy as Electron
+import qualified GHCJS.Electron.Window             as Electron
 
 testWindow :: IO ()
 testWindow = do
-  Electron.open "https://google.com"
-  Electron.open "https://google.com"
+  bwp <- Electron.open "https://google.com"
+  Electron.browserBlur bwp
+  Electron.browserEval bwp "alert(\"DEBUG!\");"
+  Electron.browserClose bwp
 
 main :: IO ()
 main = do
-  pure ()
+  testWindow

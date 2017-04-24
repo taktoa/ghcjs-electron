@@ -10,11 +10,15 @@ import           GHCJS.Electron.Types
 import           GHCJS.Electron.Types as Exported ()
 import           GHCJS.Types
 
--- Placeholder template
--- -- | FIXME: doc
--- foreign import javascript safe
---   "$1.example();"
---   appExample :: App -> IO ()
+-- | FIXME: doc
+foreign import javascript safe
+  "$1.example();"
+  appExample :: App -> IO ()
+
+-- | Get the current 'App'.
+foreign import javascript safe
+  "{ const {app} = require('electron'); $r = app; };"
+  getApp :: IO App
 
 -- FIXME: functions not yet implemented:
 --   - @addListener(event: string, listener: Function): App;@
@@ -28,10 +32,40 @@ import           GHCJS.Types
 --   - @emit(event: string, ...args: any[]): boolean;@
 --   - @listenerCount(type: string): number;@
 
--- | Get the current 'App'.
+-- | Given an 'App' and an event to listen for, run FIXME
 foreign import javascript safe
-  "{ const {app} = require('electron'); $r = app; };"
-  getApp :: IO App
+  "$1.addListener($2);"
+  appAddListener :: App
+                 -> JSString
+                 -> IO ()
+
+-- | Listen for the given event and run the given callback whenever it occurs.
+foreign import javascript safe
+  "$1.on($2, $3);"
+  appListenerOn :: App
+                -> JSString
+                -> Callback (JSString -> Any)
+                -> IO ()
+
+-- | Listen for the given event and run the given callback exactly once;
+--   i.e.: the callback will be run precisely the first time the event occurs
+--   after this function is run.
+foreign import javascript safe
+  "$1.once($2, $3);"
+  appListenerOnce :: App
+                  -> JSString
+                  -> Callback (JSString -> Any)
+                  -> IO ()
+
+-- | Remove all listeners on the given 'App'.
+foreign import javascript safe
+  "$1.removeAllListeners();"
+  appRemoveAllListeners :: App -> IO ()
+
+-- | Remove all listeners for the given event on the given 'App'.
+foreign import javascript safe
+  "$1.removeAllListeners($2);"
+  appRemoveAllListenersOnEvent :: App -> JSString -> IO ()
 
 -- | Try to close all windows. The before-quit event will first be emitted.
 --   If all windows are successfully closed, the will-quit event will be emitted
@@ -53,7 +87,7 @@ foreign import javascript safe
 -- | Returns the current application directory.
 foreign import javascript safe
   "$1.getAppPath();"
-  appGetAppPath :: App -> IO JSString
+  appGetAppPath :: App -> IO Path
 
 -- | Get a special path with the given name.
 foreign import javascript safe
@@ -63,7 +97,7 @@ foreign import javascript safe
              -- ^ Should be one of the following:
              --   @"home"@, @"appData"@, @"userData"@, @"cache"@, @"userCache"@,
              --   @"temp"@, @"userDesktop"@, @"exe"@, @"module"@
-             -> IO JSString
+             -> IO Path
              -- ^ The path associated with the given name.
 
 -- | Overrides the path to a special directory or file associated with name.
@@ -80,7 +114,7 @@ foreign import javascript safe
              -- ^ Should be one of the following:
              --   @"home"@, @"appData"@, @"userData"@, @"cache"@, @"userCache"@,
              --   @"temp"@, @"userDesktop"@, @"exe"@, @"module"@
-             -> JSString
+             -> Path
              -- ^ A file path to set; will be created if it does not exist.
              -> IO ()
 
@@ -104,9 +138,9 @@ foreign import javascript safe
 foreign import javascript safe
   "$1.resolveProxy($2, $3);"
   appResolveProxy :: App
-                  -> JSString
+                  -> URL
                   -- ^ The URL to resolve.
-                  -> Callback -- FIXME: ???
+                  -> Callback (Proxy -> IO ())
                   -- ^ The callback to call once the URL is resolved.
                   -> IO ()
 
@@ -116,7 +150,7 @@ foreign import javascript safe
 foreign import javascript safe
   "$1.addRecentDocument($2);"
   appAddRecent :: App
-               -> JSString
+               -> Path
                -- ^ A path to add to the recent documents list.
                -> IO ()
 
@@ -126,13 +160,13 @@ foreign import javascript safe
   appClearRecent :: App -> IO ()
 
 -- | Adds tasks to the Tasks category of JumpList on Windows.
---   This API is _only_ available on Windows.
+--   This API is /only/ available on Windows.
 foreign import javascript safe
   "$1.setUserTasks($2);"
-  appExample :: App
-             -> JSVal
-             -- ^ A list of tasks to which the user tasks will be set.
-             -> IO ()
+  appSetUserTasks :: App
+                  -> JSVal
+                  -- ^ A list of tasks to which the user tasks will be set.
+                  -> IO ()
 
 -- | FIXME: doc
 foreign import javascript safe
@@ -166,7 +200,7 @@ foreign import javascript safe
 foreign import javascript safe
   "$r = $1.makeSingleInstance($2);"
   appMakeSingleInstance :: App
-                        -> Callback -- FIXME: ???
+                        -> Callback (JSArray JSString -> JSString -> IO Bool)
                         -- ^ FIXME: doc
                         -> IO Bool
 

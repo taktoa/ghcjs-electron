@@ -85,11 +85,10 @@ library
                         , GHCJS.Electron.WebFrame
                         , GHCJS.Electron.WebRequest
                         , GHCJS.Electron.Window
-    ghc-options:          -Wall -O2 -g
+    ghc-options:          -Wall -g
                           -fno-warn-type-defaults
                           -fno-warn-unused-do-bind
                           -fno-warn-unused-imports
-    ghc-prof-options:     -auto-all
     hs-source-dirs:       src
 
 test-suite tests

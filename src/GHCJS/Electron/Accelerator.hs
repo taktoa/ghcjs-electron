@@ -1,5 +1,8 @@
-{-# LANGUAGE JavaScriptFFI #-}
-{-# LANGUAGE LambdaCase    #-}
+{-# LANGUAGE DeriveGeneric              #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE JavaScriptFFI              #-}
+{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings          #-}
 
 -- | FIXME: doc
 module GHCJS.Electron.Accelerator
@@ -7,14 +10,30 @@ module GHCJS.Electron.Accelerator
   , module GHCJS.Electron.Accelerator
   ) where
 
+import           Control.Arrow
+import           Control.Monad
+
+import           Data.Char            (isDigit)
+import           Data.Maybe
+
 import           GHCJS.Electron.Types
 import           GHCJS.Electron.Types as Exported ()
 import           GHCJS.Types
 
+import           Data.Text            (Text)
+import qualified Data.Text            as T
+
+import           GHC.Generics         (Generic)
+
 -- | FIXME: doc
 foreign import javascript safe
-  "$1.globalShortcut.register($2, $3);"
-  acceleratorRegister :: Electron
+  "$r = require('electron').globalShortcut;"
+  getGlobalShortcut :: IO GlobalShortcut
+
+-- | FIXME: doc
+foreign import javascript safe
+  "$1.register($2, $3);"
+  acceleratorRegister :: GlobalShortcut
                       -> JSString
                       -> Callback ()
                       -> IO ()
@@ -31,8 +50,8 @@ simpleKQ modifier key = MkKeyQuery [MkKeyCombination key modifier]
 -- | A combination of a key and a modifier.
 data KeyCombination
   = MkKeyCombination
-    { _kcCode      :: {-# UNPACK #-} !KeyCode
-    , _kcModifiers :: {-# UNPACK #-} ![KeyModifier]
+    { _kcCode      :: !KeyCode
+    , _kcModifiers :: [KeyModifier]
     }
   deriving (Eq, Show, Read, Generic)
 
@@ -59,13 +78,13 @@ keyModToAccelerator KeyModSuper   = "Super"
 
 -- | A key code.
 data KeyCode
-  = KeyCodeLetter     {-# UNPACK #-} !KeyCodeLetter
-  | KeyCodeDigit      {-# UNPACK #-} !KeyCodeDigit
-  | KeyCodeSymbol     {-# UNPACK #-} !KeyCodeSymbol
-  | KeyCodeFunction   {-# UNPACK #-} !KeyCodeFunction
-  | KeyCodeNavigation {-# UNPACK #-} !KeyCodeNavigation
-  | KeyCodeSpecial    {-# UNPACK #-} !KeyCodeSpecial
-  | KeyCodeMisc       {-# UNPACK #-} !KeyCodeMisc
+  = KeyCodeLetter     !KeyCodeLetter
+  | KeyCodeDigit      !KeyCodeDigit
+  | KeyCodeSymbol     !KeyCodeSymbol
+  | KeyCodeFunction   !KeyCodeFunction
+  | KeyCodeNavigation !KeyCodeNavigation
+  | KeyCodeSpecial    !KeyCodeSpecial
+  | KeyCodeMisc       !KeyCodeMisc
   deriving (Eq, Show, Read, Generic)
 
 -- | FIXME: doc
@@ -114,7 +133,7 @@ keyCodeToAccelerator = go >>> fromMaybe (error "This should not happen.")
                          KeyVolumeMute -> pure "VolumeMute"
     goMisc       = stripKey >=> checkLen 0 12
 
-    checkLen :: (Int, Int) -> Text -> Maybe Text
+    checkLen :: Int -> Int -> Text -> Maybe Text
     checkLen minLen maxLen t = do
       guard (T.length t >= minLen)
       guard (T.length t <= maxLen)
@@ -168,10 +187,10 @@ data KeyCodeNavigation
 
 -- | Key codes corresponding to special keys, like @XF86AudioPlayPause@.
 data KeyCodeSpecial
-  = KeyMediaNextTrack
-  | KeyMediaPrevTrack
+  = KeyMediaNext
+  | KeyMediaPrev
   | KeyMediaStop
-  | KeyMediaPlayPause
+  | KeyMediaPlay
   | KeyVolumeUp
   | KeyVolumeDown
   | KeyVolumeMute

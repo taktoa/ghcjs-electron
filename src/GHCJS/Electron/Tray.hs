@@ -8,7 +8,7 @@
 {-# LANGUAGE TypeOperators         #-}
 {-# LANGUAGE UndecidableInstances  #-}
 
--- | FIXME: doc
+-- FIXME: doc
 module GHCJS.Electron.Tray
   ( module Exported
   , module GHCJS.Electron.Tray

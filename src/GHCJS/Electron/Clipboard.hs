@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- | FIXME: doc
+-- FIXME: doc
 module GHCJS.Electron.Clipboard
   ( module Exported
   , module GHCJS.Electron.Clipboard

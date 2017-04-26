@@ -1,4 +1,4 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- | FIXME: doc
+-- FIXME: doc
 module GHCJS.Electron.Cookies where

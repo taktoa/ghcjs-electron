@@ -46,6 +46,9 @@ newtype Clipboard
 newtype CommandLine
   = MkCommandLine JSVal
 
+newtype Dialog
+  = MkDialog JSVal
+
 newtype Event
   = MkEvent JSVal
 

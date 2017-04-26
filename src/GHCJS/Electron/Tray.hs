@@ -90,36 +90,36 @@ type TrayEvent =
    , "drag-end"       ▶ '( '[Darwin], '[] )
    ]
 
--- | FIXME: doc
+-- | Initialize a new 'Tray'.
 foreign import javascript safe
   "$r = new Tray($1);"
   trayNew :: Path -> IO Tray
 
--- | FIXME: doc
+-- | Cast a 'Tray' to an 'EventEmitter TrayEvent'.
 foreign import javascript safe
   "$r = $1;"
   trayEventEmitter :: Tray -> IO (EventEmitter TrayEvent)
 
--- | FIXME: doc
+-- | Destroy the given 'Tray', freeing the associated resources.
 foreign import javascript safe
   "$1.destroy();"
   trayDestroy :: Tray -> IO ()
 
--- | FIXME: doc
+-- | Set the tray icon to the given 'Image'.
 foreign import javascript safe
   "$1.setImage($2);"
   traySetImage :: Tray  -- ^ The tray to modify.
                -> Image -- ^ The image to set as the tray icon.
                -> IO ()
 
--- | FIXME: doc
+-- | Set the tray icon to the image file at the given 'Path'.
 foreign import javascript safe
   "$1.setImage($2);"
   traySetImagePath :: Tray  -- ^ The tray to modify.
                    -> Path  -- ^ The path to an image to set as the tray icon.
                    -> IO ()
 
--- | FIXME: doc
+-- | Set the "pressed" image for the tray to the given 'Image'.
 --   NOTE: this function only works on Mac OS
 foreign import javascript safe
   "$1.setPressedImage($2);"
@@ -127,7 +127,7 @@ foreign import javascript safe
                       -> Image -- ^ The image to set as the "pressed" image.
                       -> IO ()
 
--- | FIXME: doc
+-- | Set the "title" to the given 'JSString'.
 --   NOTE: this function only works on Mac OS
 foreign import javascript safe
   "$1.setTitle($2);"
@@ -154,7 +154,7 @@ foreign import javascript safe
                        --   * @"never"@: Never highlight the tray icon.
                        -> IO ()
 
--- | FIXME: doc
+-- | Create a balloon popup ala Windows XP.
 --   NOTE: this function only works on Windows
 foreign import javascript safe
   "$1.displayBalloon();"

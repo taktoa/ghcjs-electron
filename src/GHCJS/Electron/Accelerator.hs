@@ -25,12 +25,14 @@ import qualified Data.Text            as T
 
 import           GHC.Generics         (Generic)
 
--- | FIXME: doc
+-- | Get the canonical 'GlobalShortcut' object, i.e.: the value of
+--   @require('electron').globalShortcut@.
 foreign import javascript safe
   "$r = require('electron').globalShortcut;"
   getGlobalShortcut :: IO GlobalShortcut
 
--- | FIXME: doc
+-- | Register a callback for the given shortcut string using the given
+--   'GlobalShortcut' object.
 foreign import javascript safe
   "$1.register($2, $3);"
   acceleratorRegister :: GlobalShortcut

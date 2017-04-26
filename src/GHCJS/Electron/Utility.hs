@@ -5,5 +5,5 @@ module GHCJS.Electron.Utility
   , module Exported
   ) where
 
-import           Data.Kind    as Exported (type Type)
+import           Data.Kind    as Exported (type Type, Constraint)
 import           GHC.TypeLits as Exported (Symbol)

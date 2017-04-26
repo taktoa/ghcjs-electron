@@ -1,7 +1,14 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- | FIXME: doc
-module GHCJS.Electron.Dialog where
+-- FIXME: doc
+module GHCJS.Electron.Dialog
+  ( module Exported
+  , module GHCJS.Electron.Dialog
+  ) where
+
+import           GHCJS.Electron.Types
+import           GHCJS.Electron.Types as Exported (Dialog (..))
+import           GHCJS.Types
 
 -- FIXME: replace these "Options object"s with proper type definitions.
 
@@ -53,8 +60,9 @@ foreign import javascript safe
 --
 --   NOTE: this function only works on Mac OS
 foreign import javascript safe
-  "$1.showCertificateTrustDialog($2, $3);"
-  dialogShowMessageBox :: Dialog
-                       -> BrowserWindow -- ^ Window on which to open the box.
-                       -> JSVal         -- ^ Options object.
-                       -> IO Int        -- ^ The index of the clicked button.
+  "$1.showCertificateTrustDialog($2, $3, () => $4);"
+  dialogCertDialog :: Dialog
+                   -> BrowserWindow    -- ^ Window on which to open the box.
+                   -> JSVal            -- ^ Options object.
+                   -> Callback (IO ()) -- ^ A callback to run once done.
+                   -> IO ()

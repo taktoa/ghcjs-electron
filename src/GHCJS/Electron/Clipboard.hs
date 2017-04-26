@@ -40,7 +40,7 @@ foreign import javascript safe
 -- | Set the clipboard to the given HTML string.
 foreign import javascript safe
   "$1.writeHTML($3, $2);"
-  clipboardWriteText :: Clipboard -- ^ The clipboard object.
+  clipboardWriteHTML :: Clipboard -- ^ The clipboard object.
                      -> JSString  -- ^ The clipboard type, e.g.: "selection".
                      -> JSString  -- ^ The contents to set the clipboard to.
                      -> IO ()

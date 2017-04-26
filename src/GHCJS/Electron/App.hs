@@ -7,37 +7,20 @@ module GHCJS.Electron.App
   ) where
 
 import           GHCJS.Electron.Types
-import           GHCJS.Electron.Types as Exported ()
+import           GHCJS.Electron.Types as Exported (App (..))
 import           GHCJS.Types
 
--- | FIXME: doc
-foreign import javascript safe
-  "$1.example();"
-  appExample :: App -> IO ()
-
--- | Get the current 'App'.
-foreign import javascript safe
-  "{ const {app} = require('electron'); $r = app; };"
-  getApp :: IO App
-
 -- FIXME: functions not yet implemented:
---   - @addListener(event: string, listener: Function): App;@
---   - @on(event: string, listener: Function): App;@
---   - @once(event: string, listener: Function): App;@
 --   - @removeListener(event: string, listener: Function): App;@
 --   - @removeAllListeners(event?: string): App;@
---   - @setMaxListeners(n: number): App;@
---   - @getMaxListeners(): number;@
 --   - @listeners(event: string): Function[];@
 --   - @emit(event: string, ...args: any[]): boolean;@
 --   - @listenerCount(type: string): number;@
 
--- | Given an 'App' and an event to listen for, run FIXME
+-- | Get the current 'App' as returned by @require("electron").app@.
 foreign import javascript safe
-  "$1.addListener($2);"
-  appAddListener :: App
-                 -> JSString
-                 -> IO ()
+  "$r = require('electron').app;"
+  getApp :: IO App
 
 -- | Listen for the given event and run the given callback whenever it occurs.
 foreign import javascript safe
@@ -66,6 +49,23 @@ foreign import javascript safe
 foreign import javascript safe
   "$1.removeAllListeners($2);"
   appRemoveAllListenersOnEvent :: App -> JSString -> IO ()
+
+-- | Set the maximum number of listeners for events on the given 'App' to the
+--   given natural number.
+foreign import javascript safe
+  "$1.setMaxListeners($2);"
+  appSetMaxListeners :: App -> Int -> IO ()
+
+-- | Get the maximum number of listeners for events on the given 'App', as set
+--   by 'appSetMaxListeners'.
+foreign import javascript safe
+  "$r = $1.getMaxListeners();"
+  appGetMaxListeners :: App -> IO Int
+
+-- | Get the number of listeners for the given event on the given 'App'.
+foreign import javascript safe
+  "$r = $1.listenerCount($2);"
+  appListenerCount :: App -> JSString -> IO Int
 
 -- | Try to close all windows. The before-quit event will first be emitted.
 --   If all windows are successfully closed, the will-quit event will be emitted

@@ -5,7 +5,6 @@
 {-# LANGUAGE PolyKinds             #-}
 {-# LANGUAGE RankNTypes            #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeInType            #-}
 {-# LANGUAGE TypeOperators         #-}
 {-# LANGUAGE UndecidableInstances  #-}
 
@@ -16,91 +15,16 @@ module GHCJS.Electron.Tray
   ) where
 
 import           Data.Ord
-
-import           GHC.TypeLits
+import           GHCJS.Electron.Types
+import           GHCJS.Electron.Types   as Exported (EventEmitter)
 import           GHCJS.Electron.Utility as Exported
--- import           GHCJS.Electron.Types
--- import           GHCJS.Electron.Types as Exported ()
--- import           GHCJS.Types
+import           GHCJS.Types
 
---------------------------------------------------------------------------------
+data Platform = PlatLinux | PlatMacOS | PlatWindows
 
--- Type-level insertion sort for 'Symbols'; this code is partially from
--- https://kseo.github.io/posts/2017-01-30-type-level-insertion-sort.html
-
--- type family InsertSym x xs where
---   InsertSym x '[]       = x ': '[]
---   InsertSym x (y ': ys) = InsertSym' (CmpSymbol x y) x y ys
---
--- type family InsertSym' b x y ys where
---   InsertSym' 'LT x y ys = x ': (y ': ys)
---   InsertSym' _   x y ys = y ': InsertSym x ys
---
--- type family SortSym xs where
---   SortSym '[]       = '[]
---   SortSym (x ': xs) = InsertSym x (SortSym xs)
-
--- type family IsEqual (ord :: Ordering) :: Bool where
---   IsEqual 'EQ = 'True
---   IsEqual _   = 'False
---
--- type family (:≡:) (symA :: Symbol) (symB :: Symbol) :: Bool where
---   symA :≡: symB = IsEqual (CmpSymbol symA symB)
-
-type TKey = Symbol
-type TKV k = (TKey, k)
-
-type family (:≡:) (symA :: Symbol) (symB :: Symbol) :: Bool where
-  sym :≡: sym = 'True
-  _   :≡:   _ = 'False
-
-type family If (bool :: Bool) (valA :: k) (valB :: k) :: k where
-  If 'True  valA _    = valA
-  If 'False _    valB = valB
-
-type family InsertPair' (b :: Ordering) (x :: TKV k) (y :: TKV k) (ys :: [TKV k]) where
-  InsertPair' 'LT x y ys = x ': (y ': ys)
-  InsertPair' _   x y ys = y ': InsertPair x ys
-
-type family InsertPair (x :: TKV k) (xs :: [TKV k]) where
-  InsertPair x '[] = x ': '[]
-  InsertPair '(x, xV) ('(y, yV) ': ys)
-    = InsertPair' (CmpSymbol x y) '(x, xV) '(y, yV) ys
-
-type family SortPairs (xs :: [TKV k]) :: [TKV k] where
-  SortPairs '[]       = '[]
-  SortPairs (x ': xs) = InsertPair x (SortPairs xs)
-
-type family UniqPairs (list :: [TKV k]) :: [TKV k] where
-  UniqPairs ('(a, aVal) ': ('(b, bVal) ': rest))
-    = If (a :≡: b)
-         (UniqPairs ('(a, aVal) ': rest))
-         ('(a, aVal) ': (UniqPairs ('(b, bVal) ': rest)))
-  UniqPairs other = other
-
-type family DedupePairs (list :: [TKV k]) :: [TKV k] where
-  DedupePairs list = UniqPairs (SortPairs list)
-
-type family Update (key :: Symbol) (val :: k) (map :: [TKV k]) where
-  Update key new '[]                   = '[]
-  Update key new ('(key, old) ': rest) = '(key, new) ': (Update key new rest)
-  Update key new (pair        ': rest) = pair        ': (Update key new rest)
-
-type family RBM' (mapX :: [TKV k]) (mapY :: [TKV k]) :: [TKV k] where
-  RBM' mapX ('(key, val) ': rest) = RBM' (Update key val mapX) rest
-
-type family RBM (mapX :: [TKV k]) (mapY :: [TKV k]) :: [TKV k] where
-  RBM mapX mapY = DedupePairs (RBM' (DedupePairs mapX) (DedupePairs mapY))
-
-type mapX // mapY = RBM mapX mapY
-
---------------------------------------------------------------------------------
-
-data JSString
-data Image
-
-data Platform
-  = Linux | MacOS | Windows
+type Linux = 'PlatLinux
+type Win32 = 'PlatWindows
+type Darwin = 'PlatMacOS
 
 data KV :: Symbol -> k -> Type where
   ProxyKV :: KV key val
@@ -147,26 +71,25 @@ type Rectangle
      ]
 
 type TrayEvent =
-  '[ "click"          ▶ '( '[Linux, MacOS, Windows]
+  '[ "click"          ▶ '( '[Linux, Darwin, Win32]
                          , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "right-click"    ▶ '( '[MacOS, Windows]
+   , "right-click"    ▶ '( '[Darwin, Win32]
                          , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "double-click"   ▶ '( '[MacOS, Windows]
+   , "double-click"   ▶ '( '[Darwin, Win32]
                          , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "balloon-show"   ▶ '( '[Windows], '[] )
-   , "balloon-click"  ▶ '( '[Windows], '[] )
-   , "balloon-closed" ▶ '( '[Windows], '[] )
-   , "drop"           ▶ '( '[MacOS], '[] )
-   , "drop-files"     ▶ '( '[MacOS]
+   , "balloon-show"   ▶ '( '[Win32], '[] )
+   , "balloon-click"  ▶ '( '[Win32], '[] )
+   , "balloon-closed" ▶ '( '[Win32], '[] )
+   , "drop"           ▶ '( '[Darwin], '[] )
+   , "drop-files"     ▶ '( '[Darwin]
                          , '["event" ↦ '[], "files" ↦ Array JSString] )
-   , "drop-text"      ▶ '( '[MacOS]
+   , "drop-text"      ▶ '( '[Darwin]
                          , '["event" ↦ '[], "text" ↦ JSString] )
-   , "drag-enter"     ▶ '( '[MacOS], '[] )
-   , "drag-leave"     ▶ '( '[MacOS], '[] )
-   , "drag-end"       ▶ '( '[MacOS], '[] )
+   , "drag-enter"     ▶ '( '[Darwin], '[] )
+   , "drag-leave"     ▶ '( '[Darwin], '[] )
+   , "drag-end"       ▶ '( '[Darwin], '[] )
    ]
 
-{-
 -- | FIXME: doc
 foreign import javascript safe
   "$r = new Tray($1);"
@@ -179,7 +102,7 @@ foreign import javascript safe
 
 -- | FIXME: doc
 foreign import javascript safe
-  "$1.destroy;"
+  "$1.destroy();"
   trayDestroy :: Tray -> IO ()
 
 -- | FIXME: doc
@@ -238,4 +161,3 @@ foreign import javascript safe
   trayDisplayBalloon :: Tray     -- ^ The tray to modify.
                      -> JSString -- ^ The title displayed next to the tray icon.
                      -> IO ()
--}

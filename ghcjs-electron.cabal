@@ -22,6 +22,9 @@ source-repository head
 library
     build-depends:        base       == 4.*
                         , text       == 1.2.*
+                        , stm        == 2.4.*
+                        , vinyl      == 0.5.*
+                        , containers == 0.5.*
                         , ghcjs-prim
                         , ghcjs-base
                           -- , transformers   == 0.5.*

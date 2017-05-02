@@ -1,11 +1,14 @@
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE JavaScriptFFI     #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveGeneric      #-}
+{-# LANGUAGE JavaScriptFFI      #-}
+{-# LANGUAGE OverloadedStrings  #-}
 
-{-# ANN module "HLint: ignore Use camelCase" #-}
-
--- FIXME: doc
-module GHCJS.Electron.Locales where
+-- | A wrapper over the Electron locale API, as documented
+-- <https://electron.atom.io/docs/api/locales here>.
+module GHCJS.Electron.Locales
+  ( LocaleID, Locale (..), LocaleData (..)
+  , getLocaleID, getLocale, toLocaleData, parseLocale, localeMap
+  ) where
 
 import           Data.Maybe      (fromJust)
 
@@ -13,8 +16,49 @@ import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 
 import           Data.Text       (Text)
+import qualified Data.Text       as Text
 
+import           Data.JSString   (JSString)
+import qualified Data.JSString   as JSString
+
+import           Data.Data       (Data)
 import           GHC.Generics    (Generic)
+
+foreign import javascript safe
+  "$r = require('electron').app.getLocale();"
+  appGetLocale :: IO JSString
+
+-- | Get the current 'LocaleID'.
+getLocaleID :: IO LocaleID
+getLocaleID = Text.pack . JSString.unpack <$> appGetLocale
+
+-- | Get the current 'Locale'.
+getLocale :: IO (Maybe Locale)
+getLocale = parseLocale <$> getLocaleID
+
+-- | Get the 'LocaleData' corresponding to the given 'Locale'.
+toLocaleData :: Locale -> LocaleData
+toLocaleData = fromJust . flip Map.lookup localeMap
+
+-- | Get the 'Locale' corresponding to the given IETF language tag, assuming
+-- that such a 'Locale' exists in the 'localeMap'.
+parseLocale :: LocaleID -> Maybe Locale
+parseLocale = flip Map.lookup
+              (Map.fromList ((\(loc, ld) -> (_localeDataID ld, loc))
+                             <$> Map.toList localeMap))
+
+-- | An IETF language tag, as specified in RFC 5646 and RFC 4647.
+type LocaleID = Text
+
+-- | A 'LocaleData' contains two pieces of information:
+-- 1. The locale ID, as an IETF language tag.
+-- 2. The name of the locale, as English text.
+data LocaleData
+  = MkLocaleData
+    { _localeDataID   :: !LocaleID
+    , _localeDataName :: !Text
+    }
+  deriving (Eq, Ord, Show, Generic)
 
 -- | The type of locales.
 data Locale
@@ -146,34 +190,7 @@ data Locale
   | Locale_ZH_CN -- ^ Chinese (PRC)
   | Locale_ZH_HK -- ^ Chinese (Hong Kong)
   | Locale_ZH_SG -- ^ Chinese (Singapore)
-  deriving (Eq, Ord, Show, Enum, Bounded)
-
--- | An IETF language tag, as specified in RFC 5646 and RFC 4647.
-type LocaleID = Text
-
--- | The English name of a locale.
-type LocaleName = Text
-
--- | A 'LocaleData' contains two pieces of information:
--- 1. The locale ID, as an IETF language tag.
--- 2. The name of the locale, as English text.
-data LocaleData
-  = MkLocaleData
-    { _localeDataID   :: !LocaleID
-    , _localeDataName :: !LocaleName
-    }
-  deriving (Eq, Ord, Show, Generic)
-
--- | Get the 'LocaleData' corresponding to the given 'Locale'.
-getLocaleData :: Locale -> LocaleData
-getLocaleData = fromJust . flip Map.lookup localeMap
-
--- | Get the 'Locale' corresponding to the given IETF language tag, assuming
--- that such a 'Locale' exists in the 'localeMap'.
-toLocale :: LocaleID -> Maybe Locale
-toLocale = flip Map.lookup
-           (Map.fromList ((\(loc, ld) -> (_localeDataID ld, loc))
-                          <$> Map.toList localeMap))
+  deriving (Eq, Ord, Show, Enum, Bounded, Data, Generic)
 
 -- | This allows you to get the 'LocaleData' associated with a given 'Locale'.
 --

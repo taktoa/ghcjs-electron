@@ -3,9 +3,11 @@
 module Main where
 
 import           Data.JSString
+
 import qualified GHCJS.Electron.Accelerator        as Electron
 import qualified GHCJS.Electron.BrowserWindowProxy as Electron
 import qualified GHCJS.Electron.Clipboard          as Electron
+import qualified GHCJS.Electron.GlobalShortcut     as Electron
 import qualified GHCJS.Electron.Tray               as Electron
 import qualified GHCJS.Electron.Window             as Electron
 
@@ -29,7 +31,7 @@ testClipboard = do
 testAccelerator :: IO ()
 testAccelerator = do
   gs <- Electron.getGlobalShortcut
-  Electron.acceleratorRegister gs "Shift+5" undefined
+  Electron.register gs "Shift+5" undefined
 
 main :: IO ()
 main = do

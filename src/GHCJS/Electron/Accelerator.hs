@@ -17,7 +17,7 @@ import           Data.Char            (isDigit)
 import           Data.Maybe
 
 import           GHCJS.Electron.Types
-import           GHCJS.Electron.Types as Exported ()
+import           GHCJS.Electron.Types as Exported (Accelerator)
 import           GHCJS.Types
 
 import           Data.Text            (Text)
@@ -25,20 +25,9 @@ import qualified Data.Text            as T
 
 import           GHC.Generics         (Generic)
 
--- | Get the canonical 'GlobalShortcut' object, i.e.: the value of
---   @require('electron').globalShortcut@.
-foreign import javascript safe
-  "$r = require('electron').globalShortcut;"
-  getGlobalShortcut :: IO GlobalShortcut
-
--- | Register a callback for the given shortcut string using the given
---   'GlobalShortcut' object.
-foreign import javascript safe
-  "$1.register($2, $3);"
-  acceleratorRegister :: GlobalShortcut
-                      -> JSString
-                      -> Callback ()
-                      -> IO ()
+-- | Compile a 'KeyQuery' to a list of 'Accelerator's.
+runKeyQuery :: KeyQuery -> [Accelerator]
+runKeyQuery = undefined -- FIXME: implement
 
 -- | Represents a particular subset of the set of all key combinations.
 newtype KeyQuery
@@ -59,14 +48,21 @@ data KeyCombination
 
 -- | A key modifier.
 data KeyModifier
-  = KeyModCommand
-  | KeyModControl
-  | KeyModAlt
+  = KeyModAlt
+    -- ^ This is bound to the "Alt" key on PC keyboards, and it is bound
+    --   to the "Alt/Option" key on Mac keyboards.
   | KeyModAltGr
+    -- ^ This is bound to the "AltGr" key on international PC keyboards.
+  | KeyModCommand
+    -- ^ This is bound to the "Command ⌘" key on Mac keyboards.
+  | KeyModControl
+    -- ^ This is bound to the "Ctrl" key on PC keyboards, and it is bound
+    --   to the "Control" key on Mac keyboards.
   | KeyModShift
+    -- ^ This is bound to the "Shift" key on both PC and Mac keyboards.
   | KeyModSuper
-    -- ^ This is the "Windows key" on Linux/Windows keyboards.
-    --   On Mac keyboards, it is "Cmd".
+    -- ^ This is bound to the "Windows ⊞" key on PC keyboards, and it is bound
+    --   to the "Command ⌘" key on Mac keyboards.
   deriving (Eq, Show, Read, Generic)
 
 -- FIXME: doc

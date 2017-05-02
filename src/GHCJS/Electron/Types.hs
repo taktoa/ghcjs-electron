@@ -1,8 +1,13 @@
-{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE PolyKinds                  #-}
 
 module GHCJS.Electron.Types where
 
 import           GHCJS.Types
+
+import           Data.JSString (JSString)
+
+import           Data.String   (IsString)
 
 --------------------------------------------------------------------------------
 
@@ -27,6 +32,11 @@ newtype Path
   = MkPath JSString
 
 --------------------------------------------------------------------------------
+
+-- | A string representing a key combination.
+newtype Accelerator
+  = MkAccelerator JSString
+  deriving (IsString)
 
 newtype App
   = MkApp JSVal

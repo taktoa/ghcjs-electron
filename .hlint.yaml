@@ -1,0 +1,59 @@
+# ##############################
+# ## HLint configuration file ##
+# ##############################
+
+- ignore: {name: Use camelCase}
+
+# ### Specify additional command line arguments
+#
+# - arguments: [--color, --cpp-simple, -XQuasiQuotes]
+#
+# ### Control which extensions/flags/modules/functions can be used
+#
+# - extensions:
+#   # All extensions are banned by default
+#   - default: false
+#   # Only these listed extensions can be used
+#   - name: [PatternGuards, ViewPatterns]
+#   # CPP can only be used in a given module
+#   - {name: CPP, within: CrossPlatform}
+#
+# - flags:
+#   - {name: -w, within: []} # -w is allowed nowhere
+#
+# - modules:
+#   # if you import Data.Set qualified, it must be as 'Set'
+#   - {name: [Data.Set, Data.HashSet], as: Set}
+#   # Certain modules are banned entirely
+#   - {name: Control.Arrow, within: []}
+#
+# - functions:
+#   # unsafePerformIO can only appear in no modules
+#   - {name: unsafePerformIO, within: []}
+#
+# ### Add custom hints for this project
+#
+# # Suggest replacing "wibbleMany [myvar]" with "wibbleOne myvar"
+# - error: {lhs: "wibbleMany [x]", rhs: wibbleOne x}
+#
+# ### Turn on hints that are off by default
+#
+# # Ban "module X(module X) where", to require a real export list
+# - warn: {name: Use explicit module export list}
+#
+# # Replace a $ b $ c with a . b $ c
+# - group: {name: dollar, enabled: true}
+#
+# # Generalise map to fmap, ++ to <>
+# - group: {name: generalise, enabled: true}
+#
+# ### Ignore some builtin hints
+#
+# # Ignore hints globally
+# - ignore: {name: Use let}
+# # Ignore hints within certain modules
+# - ignore: {name: Use const, within: SpecialModule}
+#
+# ### Define some custom infix operators
+#
+# - fixity: infixr 3 ~^#^~

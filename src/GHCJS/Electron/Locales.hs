@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedStrings  #-}
 
 -- | A wrapper over the Electron locale API, as documented
--- <https://electron.atom.io/docs/api/locales here>.
+--   <https://electron.atom.io/docs/api/locales here>.
 module GHCJS.Electron.Locales
   ( LocaleID, Locale (..), LocaleData (..)
   , getLocaleID, getLocale, toLocaleData, parseLocale, localeMap

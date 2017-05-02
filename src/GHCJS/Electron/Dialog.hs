@@ -60,7 +60,7 @@ foreign import javascript safe
 --
 --   NOTE: this function only works on Mac OS
 foreign import javascript safe
-  "$1.showCertificateTrustDialog($2, $3, () => $4);"
+  "$1.showCertificateTrustDialog($2, $3, $4);"
   dialogCertDialog :: Dialog
                    -> BrowserWindow    -- ^ Window on which to open the box.
                    -> JSVal            -- ^ Options object.

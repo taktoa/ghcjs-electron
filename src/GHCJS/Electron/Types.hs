@@ -51,6 +51,14 @@ newtype URL
 newtype Path
   = MkPath JSString
 
+-- FIXME: doc
+newtype HTML
+  = MkHTML JSString
+
+-- FIXME: doc
+newtype RTF
+  = MkRTF JSString
+
 --------------------------------------------------------------------------------
 
 -- | A string representing a key combination.

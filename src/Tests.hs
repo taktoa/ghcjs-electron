@@ -24,9 +24,10 @@ testWindow = do
 
 testClipboard :: IO ()
 testClipboard = do
-  cb <- Clipboard.getClipboard "clipboard"
-  Clipboard.clipboardWriteText cb "DEBUG"
-  Clipboard.clipboardReadText cb >>= print
+  cb <- Clipboard.unsafeGetClipboard "clipboard"
+  -- Clipboard.unsafeAvailableFormats cb >>= print
+  Clipboard.unsafeWriteText cb "DEBUG"
+  Clipboard.unsafeReadText cb >>= print
 
 testGlobalShortcut :: IO ()
 testGlobalShortcut = do

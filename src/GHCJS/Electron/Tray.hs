@@ -137,7 +137,7 @@ foreign import javascript safe
                -> JSString -- ^ The title displayed next to the tray icon.
                -> IO ()
 
--- | Sets when the tray’s icon background becomes highlighted (in blue).
+-- | Sets when the tray's icon background becomes highlighted (in blue).
 --
 --   NOTE: You can use @highlightMode@ with a 'BrowserWindow' by toggling
 --   between @"never"@ and @"always"@ modes when the window visibility changes.

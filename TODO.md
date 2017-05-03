@@ -10,13 +10,13 @@
 - [x] ContentTracing
 - [ ] Cookies
 - [x] CrashReporter
-- [ ] Debugger
+- [x] Debugger
 - [ ] DesktopCapturer
 - [x] Dialog
 - [ ] DownloadItem
 - [x] GlobalShortcut
-- [ ] IPCMain
-- [ ] IPCRenderer
+- [x] IPCMain
+- [x] IPCRenderer
 - [ ] IncomingMessage
 - [x] Locales
 - [ ] Menu

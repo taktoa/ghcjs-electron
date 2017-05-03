@@ -26,3 +26,5 @@ data/
 result
 guest
 *.qcow2
+TAGS
+tags

@@ -4,37 +4,38 @@ module Main where
 
 import           Data.JSString
 
-import qualified GHCJS.Electron.Accelerator        as Electron
-import qualified GHCJS.Electron.BrowserWindowProxy as Electron
-import qualified GHCJS.Electron.Clipboard          as Electron
-import qualified GHCJS.Electron.GlobalShortcut     as Electron
-import qualified GHCJS.Electron.Tray               as Electron
-import qualified GHCJS.Electron.Window             as Electron
+import qualified GHCJS.Electron.Accelerator        as Accelerator
+import qualified GHCJS.Electron.BrowserWindowProxy as BrowserWindowProxy
+import qualified GHCJS.Electron.Clipboard          as Clipboard
+import qualified GHCJS.Electron.GlobalShortcut     as GlobalShortcut
+import qualified GHCJS.Electron.Tray               as Tray
+import qualified GHCJS.Electron.Window             as Window
 
 testWindow :: IO ()
 testWindow = do
-  bwp <- Electron.open "https://google.com"
-  Electron.browserBlur bwp
-  Electron.browserEval bwp "alert(\"DEBUG!\");"
-  Electron.browserClose bwp
+  bwp <- Window.open "https://google.com"
+  BrowserWindowProxy.browserBlur bwp
+  BrowserWindowProxy.browserEval bwp "alert(\"DEBUG!\");"
+  BrowserWindowProxy.browserClose bwp
 
 -- testTray :: IO ()
 -- testTray = do
---   Electron.trayNew ""
+--   Tray.trayNew ""
 
 testClipboard :: IO ()
 testClipboard = do
-  cb <- Electron.getClipboard "clipboard"
-  Electron.clipboardWriteText cb "DEBUG"
-  Electron.clipboardReadText cb >>= print
+  cb <- Clipboard.getClipboard "clipboard"
+  Clipboard.clipboardWriteText cb "DEBUG"
+  Clipboard.clipboardReadText cb >>= print
 
-testAccelerator :: IO ()
-testAccelerator = do
-  gs <- Electron.getGlobalShortcut
-  Electron.register gs "Shift+5" undefined
+testGlobalShortcut :: IO ()
+testGlobalShortcut = do
+  gs <- GlobalShortcut.getGlobalShortcut
+  GlobalShortcut.register gs "Shift+5" undefined
 
 main :: IO ()
 main = do
   testWindow
+  -- testTray
   testClipboard
-  testAccelerator
+  testGlobalShortcut

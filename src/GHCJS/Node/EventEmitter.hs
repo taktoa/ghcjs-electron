@@ -12,6 +12,33 @@ import           GHCJS.Array
 import           GHCJS.Foreign.Callback
 import           GHCJS.Types
 
+import           JavaScript.JSON.Types  (Value)
+
+-- | FIXME: doc
+newtype Event
+  = MkEvent JSVal
+
+-- | FIXME: doc
+foreign import javascript safe
+  "$1.returnValue = $2;"
+  unsafeSetReturnValue :: Event
+                       -> Value
+                       -> IO ()
+
+-- | FIXME: doc
+foreign import javascript safe
+  "$r = $1.sender;"
+  unsafeGetSender :: Event
+                  -> IO JSVal
+
+-- | FIXME: doc
+foreign import javascript safe
+  "(function(obj) { obj.send.apply(obj, [$2] + $3); })($1.sender);"
+  unsafeReply :: Event
+              -> Channel
+              -> Array Value
+              -> IO ()
+
 -- | An instance of the NodeJS EventEmitter class.
 newtype EventEmitter event
   = MkEventEmitter JSVal

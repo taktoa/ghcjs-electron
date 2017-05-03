@@ -11,6 +11,8 @@ module GHCJS.Electron.PowerSaveBlocker
   , unsafeIsStarted
   ) where
 
+import           GHCJS.Types
+
 -- | An Electron @powerSaveBlocker@ object.
 newtype PowerSaveBlocker
   = MkPowerSaveBlocker JSVal

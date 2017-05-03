@@ -42,6 +42,11 @@ type Darwin = 'PlatMacOS
 
 --------------------------------------------------------------------------------
 
+-- | The name of an IPC channel.
+newtype Channel
+  = MkChannel JSString
+  deriving (IsString, Generic)
+
 -- FIXME: doc
 newtype URL
   = MkURL JSString
@@ -124,6 +129,10 @@ newtype Image
 -- FIXME: doc
 newtype IPCMain
   = MkIPCMain JSVal
+
+-- FIXME: doc
+newtype IPCRenderer
+  = MkIPCRenderer JSVal
 
 -- FIXME: doc
 newtype Proxy

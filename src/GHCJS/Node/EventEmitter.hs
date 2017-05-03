@@ -14,6 +14,8 @@ import           GHCJS.Types
 
 import           JavaScript.JSON.Types  (Value)
 
+-- FIXME: maybe move this stuff to GHCJS.Electron.Event?
+
 -- | FIXME: doc
 newtype Event
   = MkEvent JSVal
@@ -35,9 +37,13 @@ foreign import javascript safe
 foreign import javascript safe
   "(function(obj) { obj.send.apply(obj, [$2] + $3); })($1.sender);"
   unsafeReply :: Event
-              -> Channel
+              -> JSString -- should be GHCJS.Electron.Types.Channel instead
               -> Array Value
               -> IO ()
+
+-- | The name of an IPC channel.
+newtype Channel
+  = MkChannel JSString
 
 -- | An instance of the NodeJS EventEmitter class.
 newtype EventEmitter event

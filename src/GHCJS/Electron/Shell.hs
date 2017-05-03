@@ -3,29 +3,29 @@
 -- | A wrapper over the Electron shell API, as documented
 --   <https://electron.atom.io/docs/api/shell here>.
 module GHCJS.Electron.Shell
-  ( module GHCJS.Electron.Shell -- FIXME: specific export list
+  ( ShortcutDetails (..), ShortcutIcon (..)
+  , Shell (..)
+  , unsafeGetShell
+  , unsafeShowItemInFolder
+  , unsafeOpenItem
+  , unsafeOpenExternal
+  , unsafeOpenExternalDarwin
+  , unsafeMoveItemToTrash
+  , unsafeBeep
+  , unsafeWriteShortcutLink
+  , unsafeReadShortcutLink
   ) where
 
--- | Text representing a Windows path reference.
---
---   Path references differ from plain old paths insofar as they can include
---   environment variables.
-newtype WindowsPathRef
-  = MkWindowsPathRef Text
+import           Data.Text            (Text)
 
--- | The icon of a Windows shortcut. This is either a path to an icon file or
---   a path to a PE file along with a resource ID.
-data ShortcutIcon
-  = ShortcutIconICO
-    { iconPath  :: WindowsPathRef
-    -- ^ The path of an ICO file.
-    }
-  | ShortcutIconPE
-    { iconPath  :: WindowsPathRef
-    -- ^ The path of a PE (Portable Executable) file; i.e.: a DLL or EXE.
-    , iconIndex :: Int
-    -- ^ The resource ID of the icon.
-    }
+import           GHCJS.Electron.Types
+
+import           GHCJS.Nullable
+import           JavaScript.Object
+
+-- FIXME: write high-level wrappers
+
+-- FIXME: write (de)serialization routines for ShortcutDetails
 
 -- | The data contained within a Windows @.lnk@ shortcut file.
 data ShortcutDetails
@@ -45,7 +45,19 @@ data ShortcutDetails
     --   Documented <https://archive.is/gRDAt here>.
     }
 
--- FIXME: write (de)serialization routines for ShortcutDetails
+-- | The icon of a Windows shortcut. This is either a path to an icon file or
+--   a path to a PE file along with a resource ID.
+data ShortcutIcon
+  = ShortcutIconICO
+    { iconPath  :: WindowsPathRef
+    -- ^ The path of an ICO file.
+    }
+  | ShortcutIconPE
+    { iconPath  :: WindowsPathRef
+    -- ^ The path of a PE (Portable Executable) file; i.e.: a DLL or EXE.
+    , iconIndex :: Int
+    -- ^ The resource ID of the icon.
+    }
 
 -- | An Electron @shell@ object.
 newtype Shell

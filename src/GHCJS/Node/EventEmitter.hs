@@ -2,7 +2,8 @@
 {-# LANGUAGE JavaScriptFFI          #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 
--- FIXME: doc
+-- | An implementation of the NodeJS EventEmitter API, as documented
+--   <https://nodejs.org/api/events.html here>.
 module GHCJS.Node.EventEmitter
   ( module GHCJS.Node.EventEmitter -- FIXME: specific export list
   ) where
@@ -11,13 +12,14 @@ import           GHCJS.Array
 import           GHCJS.Foreign.Callback
 import           GHCJS.Types
 
--- FIXME: doc
+-- | An instance of the NodeJS EventEmitter class.
 newtype EventEmitter event
   = MkEventEmitter JSVal
 
--- FIXME: doc
+-- | A typeclass representing types that can be converted to an 'EventEmitter'
+--   for a given event type.
 class IsEventEmitter event emitter | emitter -> event where
-  -- FIXME: doc
+  -- | Convert the given value to an 'EventEmitter'.
   toEventEmitter :: emitter -> IO (EventEmitter event)
 
 -- FIXME: functions not yet implemented:

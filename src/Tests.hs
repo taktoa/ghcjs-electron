@@ -34,8 +34,8 @@ testClipboard = void $ do
 
 testGlobalShortcut :: IO ()
 testGlobalShortcut = void $ do
-  gs <- GlobalShortcut.getGlobalShortcut
-  GlobalShortcut.register gs "Shift+5" undefined
+  gs <- GlobalShortcut.unsafeGetGlobalShortcut
+  GlobalShortcut.unsafeRegister gs "Shift+5" undefined
 
 testShell :: IO ()
 testShell = void $ do

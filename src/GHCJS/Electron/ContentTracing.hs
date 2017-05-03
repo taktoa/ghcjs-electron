@@ -6,16 +6,22 @@
 --   Note: You should not use this module until the @ready@ event of the
 --   app module has been emitted.
 module GHCJS.Electron.ContentTracing
-  ( module GHCJS.Electron.ContentTracing -- FIXME: specific export list
+  ( ContentTracing (..)
+  , unsafeGetContentTracing
+  , unsafeGetCategories
+  , unsafeStartRecording, unsafeStopRecording
+  , unsafeStartMonitoring, unsafeStopMonitoring
+  , unsafeCaptureMonitoringSnapshot
   ) where
 
 import           GHCJS.Electron.Types
 
--- FIXME: doc
+-- | A @contentTracing@ object.
 newtype ContentTracing
   = MkContentTracing JSVal
 
--- FIXME: doc
+-- | Get the current global 'ContentTracing' object as returned by
+--   @require("electron").contentTracing@.
 foreign import javascript safe
   "$r = require('electron').contentTracing;"
   unsafeGetContentTracing :: IO ContentTracing

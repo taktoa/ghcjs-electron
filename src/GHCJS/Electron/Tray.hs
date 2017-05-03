@@ -1,12 +1,12 @@
-{-# LANGUAGE ConstraintKinds       #-}
-{-# LANGUAGE DataKinds             #-}
-{-# LANGUAGE GADTs                 #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE PolyKinds             #-}
-{-# LANGUAGE RankNTypes            #-}
-{-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeOperators         #-}
-{-# LANGUAGE UndecidableInstances  #-}
+{-# LANGUAGE ConstraintKinds           #-}
+{-# LANGUAGE DataKinds                 #-}
+{-# LANGUAGE DeriveGeneric             #-}
+{-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE GADTs                     #-}
+{-# LANGUAGE MultiParamTypeClasses     #-}
+{-# LANGUAGE PolyKinds                 #-}
+{-# LANGUAGE Rank2Types                #-}
+{-# LANGUAGE TypeFamilies              #-}
 
 -- FIXME: doc
 module GHCJS.Electron.Tray
@@ -16,79 +16,81 @@ module GHCJS.Electron.Tray
 
 import           Data.Ord
 import           GHCJS.Electron.Types
-import           GHCJS.Electron.Types   as Exported (EventEmitter)
-import           GHCJS.Electron.Utility as Exported
+import           GHCJS.Electron.Utility  as Exported
 import           GHCJS.Types
 
-data Platform = PlatLinux | PlatMacOS | PlatWindows
+import           GHCJS.Node.EventEmitter
 
-type Linux = 'PlatLinux
-type Win32 = 'PlatWindows
-type Darwin = 'PlatMacOS
+-- FIXME: doc
+data TrayIcon
+  = TrayIconImage !Image
+  | TrayIconPath  !Path
+  deriving (Generic)
 
-data KV :: Symbol -> k -> Type where
-  ProxyKV :: KV key val
+-- FIXME: doc
+data TrayBalloonOptions
+  = MkTrayBalloonOptions
+    { icon    :: Maybe TrayIcon
+    , title   :: Maybe JSString
+    , content :: Maybe JSString
+    }
+  deriving (Generic)
 
-type (▶) k v = KV k v
+-- FIXME: doc
+data TrayClickEvent
+  = MkTrayClickEvent
+    { altKey   :: Bool
+    , shiftKey :: Bool
+    , ctrlKey  :: Bool
+    , metaKey  :: Bool
+    }
+  deriving (Generic)
 
-data Arg :: Symbol -> k -> Type where
-  ProxyArg :: Arg name ty
+-- FIXME: doc
+data Point
+  = MkPoint
+    { pointX :: Int
+    , pointY :: Int
+    }
+  deriving (Generic)
 
-type (↦) k v = Arg k v
+-- FIXME: doc
+data Rectangle
+  = MkRectangle
+    { rectangleX      :: Int
+    , rectangleY      :: Int
+    , rectangleWidth  :: Int
+    , rectangleHeight :: Int
+    }
+  deriving (Generic)
 
-data Array ty = ProxyArray
+-- FIXME: doc
+data TrayEvent (platforms :: [Platform]) where
+  TrayEventClick         :: TrayClickEvent -- ^ event
+                         -> Rectangle      -- ^ bounds
+                         -> TrayEvent '[Linux, Darwin, Win32]
+  TrayEventRightClick    :: TrayClickEvent -- ^ event
+                         -> Rectangle      -- ^ bounds
+                         -> TrayEvent '[Darwin, Win32]
+  TrayEventDoubleClick   :: TrayClickEvent -- ^ event
+                         -> Rectangle      -- ^ bounds
+                         -> TrayEvent '[Darwin, Win32]
+  TrayEventBalloonShow   :: TrayEvent '[Win32]
+  TrayEventBalloonClick  :: TrayEvent '[Win32]
+  TrayEventBalloonClosed :: TrayEvent '[Win32]
+  TrayEventDrop          :: TrayEvent '[Darwin]
+  TrayEventDropFiles     :: Array Path -- ^ files
+                         -> TrayEvent '[Darwin]
+  TrayEventDropText      :: JSString -- ^ text
+                         -> TrayEvent '[Darwin]
+  TrayEventDropEnter     :: TrayEvent '[Darwin]
+  TrayEventDropLeave     :: TrayEvent '[Darwin]
+  TrayEventDropEnd       :: TrayEvent '[Darwin]
 
-data Optional ty = ProxyOptional
-
-data (∪) (tyA :: Type) (tyB :: Type) = ProxyUnion
-
-data Event (supportedPlatforms :: [Type])
-           (arguments :: [Type])
-
-type TrayBalloonOptions
-  = '[ "icon"    ▶ Optional (Image ∪ JSString)
-     , "title"   ▶ Optional JSString
-     , "content" ▶ Optional JSString
-     ]
-
-type TrayClickEvent
-  = '[ "altKey"   ▶ Bool
-     , "shiftKey" ▶ Bool
-     , "ctrlKey"  ▶ Bool
-     , "metaKey"  ▶ Bool
-     ]
-
-type Point
-  = '[ "x" ▶ Int
-     , "y" ▶ Int
-     ]
-
-type Rectangle
-  = '[ "x"      ▶ Int
-     , "y"      ▶ Int
-     , "width"  ▶ Int
-     , "height" ▶ Int
-     ]
-
-type TrayEvent =
-  '[ "click"          ▶ '( '[Linux, Darwin, Win32]
-                         , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "right-click"    ▶ '( '[Darwin, Win32]
-                         , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "double-click"   ▶ '( '[Darwin, Win32]
-                         , '["event" ↦ TrayClickEvent, "bounds" ↦ Rectangle] )
-   , "balloon-show"   ▶ '( '[Win32], '[] )
-   , "balloon-click"  ▶ '( '[Win32], '[] )
-   , "balloon-closed" ▶ '( '[Win32], '[] )
-   , "drop"           ▶ '( '[Darwin], '[] )
-   , "drop-files"     ▶ '( '[Darwin]
-                         , '["event" ↦ '[], "files" ↦ Array JSString] )
-   , "drop-text"      ▶ '( '[Darwin]
-                         , '["event" ↦ '[], "text" ↦ JSString] )
-   , "drag-enter"     ▶ '( '[Darwin], '[] )
-   , "drag-leave"     ▶ '( '[Darwin], '[] )
-   , "drag-end"       ▶ '( '[Darwin], '[] )
-   ]
+-- FIXME: doc
+data SomeTrayEvent
+  = forall (platforms :: [Platform]).
+    MkSomeTrayEvent (TrayEvent platforms)
 
 -- | Initialize a new 'Tray'.
 foreign import javascript safe
@@ -98,7 +100,7 @@ foreign import javascript safe
 -- | Cast a 'Tray' to an 'EventEmitter TrayEvent'.
 foreign import javascript safe
   "$r = $1;"
-  trayEventEmitter :: Tray -> IO (EventEmitter TrayEvent)
+  trayEventEmitter :: Tray -> IO (EventEmitter SomeTrayEvent)
 
 -- | Destroy the given 'Tray', freeing the associated resources.
 foreign import javascript safe

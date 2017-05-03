@@ -23,8 +23,10 @@
 --   equal to the serialization of @value@.
 module GHCJS.Electron.CrashReporter where
 
-import           Data.Text         (Text)
-import qualified Data.Text         as Text
+import           Data.Text            (Text)
+import qualified Data.Text            as Text
+
+import           GHCJS.Electron.Types
 
 import           JavaScript.Object
 
@@ -82,7 +84,7 @@ foreign import javascript safe
   "$r = $1.getLastCrashReport();"
   unsafeGetLastCrashReport :: CrashReporter
                            -- ^ The crash reporter object to use.
-                           -> IO (Maybe CrashReport)
+                           -> IO JSVal -- Maybe CrashReport
                            -- ^ The last crash report if there is one.
 
 -- | Returns a list of all uploaded crash reports to date.
@@ -90,7 +92,7 @@ foreign import javascript safe
   "$r = $1.getUploadedReports();"
   unsafeGetUploadedReports :: CrashReporter
                            -- ^ The crash reporter object to use.
-                           -> IO [CrashReport]
+                           -> IO (Array CrashReport)
                            -- ^ All uploaded crash reports.
 
 -- not implemented: crashReporter.getUploadToServer

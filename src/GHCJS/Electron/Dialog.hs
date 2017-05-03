@@ -21,9 +21,9 @@ foreign import javascript safe
 foreign import javascript safe
   "$1.showOpenDialog($2, $3);"
   dialogShowOpen :: Dialog
-                 -> BrowserWindow     -- ^ Window on which to open the dialog.
-                 -> JSVal             -- ^ Options object.
-                 -> IO (JSArray Path) -- ^ An array of file paths from the user.
+                 -> BrowserWindow   -- ^ Window on which to open the dialog.
+                 -> JSVal           -- ^ Options object.
+                 -> IO (Array Path) -- ^ An array of file paths from the user.
 
 -- | Show an "save file" dialog to the user.
 foreign import javascript safe

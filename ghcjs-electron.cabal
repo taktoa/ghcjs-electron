@@ -42,6 +42,8 @@ library
     exposed-modules:      GHCJS.Electron
                         , GHCJS.Electron.Types
                         , GHCJS.Electron.Utility
+                        -- Node modules
+                        , GHCJS.Node.EventEmitter
                         -- Electron modules
                         , GHCJS.Electron.Accelerator
                         , GHCJS.Electron.App
@@ -90,6 +92,7 @@ library
                         , GHCJS.Electron.WebFrame
                         , GHCJS.Electron.WebRequest
                         , GHCJS.Electron.Window
+    other-modules:        GHCJS.Array
     ghc-options:          -Wall -g
                           -fno-warn-type-defaults
                           -fno-warn-unused-do-bind

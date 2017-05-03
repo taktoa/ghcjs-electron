@@ -1,36 +1,51 @@
+{-# LANGUAGE DataKinds                  #-}
+{-# LANGUAGE DeriveGeneric              #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE PolyKinds                  #-}
 
-module GHCJS.Electron.Types where
+module GHCJS.Electron.Types
+  ( module GHCJS.Electron.Types
+  , module Exported
+  ) where
 
-import           GHCJS.Types
+import           GHCJS.Array            as Exported
+import           GHCJS.Foreign.Callback as Exported
+import           GHCJS.Types            as Exported
 
-import           Data.JSString (JSString)
+import           Data.String            as Exported (IsString)
+import           GHC.Generics           as Exported (Generic)
 
-import           Data.String   (IsString)
+import           Data.JSString          (JSString)
 
 --------------------------------------------------------------------------------
 
 -- | A constructor-less type for use in phantom type arguments.
 data Any
 
--- FIXME: doc
-newtype Callback (a :: k)
-  = MkCallback JSVal
+--------------------------------------------------------------------------------
 
 -- FIXME: doc
-newtype JSArray (a :: k)
-  = MkJSArray JSVal
+data Platform
+  = PlatLinux   -- FIXME: doc
+  | PlatMacOS   -- FIXME: doc
+  | PlatWindows -- FIXME: doc
+  deriving (Eq, Generic)
 
 -- FIXME: doc
-newtype EventEmitter (a :: k)
-  = MkEventEmitter JSVal
+type Linux = 'PlatLinux
+
+-- FIXME: doc
+type Win32 = 'PlatWindows
+
+-- FIXME: doc
+type Darwin = 'PlatMacOS
 
 --------------------------------------------------------------------------------
 
 -- FIXME: doc
 newtype URL
   = MkURL JSString
+  deriving (Eq, Generic)
 
 -- FIXME: doc
 newtype Path

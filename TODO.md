@@ -1,0 +1,39 @@
+# Implemented modules
+
+- [x] Accelerator
+- [x] App
+- [ ] AutoUpdater
+- [ ] BrowserWindow
+- [x] BrowserWindowProxy
+- [ ] ClientRequest
+- [x] Clipboard
+- [x] ContentTracing
+- [ ] Cookies
+- [x] CrashReporter
+- [ ] Debugger
+- [ ] DesktopCapturer
+- [x] Dialog
+- [ ] DownloadItem
+- [x] GlobalShortcut
+- [ ] IPCMain
+- [ ] IPCRenderer
+- [ ] IncomingMessage
+- [x] Locales
+- [ ] Menu
+- [ ] MenuItem
+- [ ] NativeImage
+- [ ] Net
+- [ ] PowerMonitor
+- [x] PowerSaveBlocker
+- [ ] Process
+- [ ] Protocol
+- [ ] Remote
+- [ ] Screen
+- [ ] Session
+- [x] Shell
+- [ ] SystemPreferences
+- [x] Tray
+- [ ] WebContents
+- [ ] WebFrame
+- [ ] WebRequest
+- [x] Window

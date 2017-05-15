@@ -48,6 +48,7 @@ library
                         , GHCJS.Node.Stream
                         , GHCJS.Node.Crypto.Certificate
                         , GHCJS.Node.Crypto.Cipher
+                        , GHCJS.Node.Crypto.Decipher
                         -- Electron modules
                         , GHCJS.Electron.Accelerator
                         , GHCJS.Electron.App

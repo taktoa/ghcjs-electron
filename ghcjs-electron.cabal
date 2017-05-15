@@ -43,7 +43,11 @@ library
                         , GHCJS.Electron.Types
                         , GHCJS.Electron.Utility
                         -- Node modules
+                        , GHCJS.Node.Buffer
                         , GHCJS.Node.EventEmitter
+                        , GHCJS.Node.Stream
+                        , GHCJS.Node.Crypto.Certificate
+                        , GHCJS.Node.Crypto.Cipher
                         -- Electron modules
                         , GHCJS.Electron.Accelerator
                         , GHCJS.Electron.App

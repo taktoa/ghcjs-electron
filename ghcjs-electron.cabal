@@ -50,6 +50,7 @@ library
                         , GHCJS.Node.Crypto.Cipher
                         , GHCJS.Node.Crypto.Decipher
                         , GHCJS.Node.Crypto.DiffieHellman
+                        , GHCJS.Node.Crypto.ECDH
                         -- Electron modules
                         , GHCJS.Electron.Accelerator
                         , GHCJS.Electron.App

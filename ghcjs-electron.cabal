@@ -44,9 +44,6 @@ library
                         , GHCJS.Electron.Utility
                         -- Node modules
                         , GHCJS.Node.Buffer
-                        , GHCJS.Node.Error
-                        , GHCJS.Node.EventEmitter
-                        , GHCJS.Node.Stream
                         , GHCJS.Node.Console
                         , GHCJS.Node.Crypto
                         , GHCJS.Node.Crypto.Certificate
@@ -58,6 +55,10 @@ library
                         , GHCJS.Node.Crypto.HMAC
                         , GHCJS.Node.Crypto.Sign
                         , GHCJS.Node.Crypto.Verify
+                        , GHCJS.Node.DNS
+                        , GHCJS.Node.Error
+                        , GHCJS.Node.EventEmitter
+                        , GHCJS.Node.Stream
                         -- Electron modules
                         , GHCJS.Electron.Accelerator
                         , GHCJS.Electron.App

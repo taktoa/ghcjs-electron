@@ -46,6 +46,7 @@ library
                         , GHCJS.Node.Buffer
                         , GHCJS.Node.EventEmitter
                         , GHCJS.Node.Stream
+                        , GHCJS.Node.Console
                         , GHCJS.Node.Crypto
                         , GHCJS.Node.Crypto.Certificate
                         , GHCJS.Node.Crypto.Cipher

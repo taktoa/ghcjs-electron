@@ -44,6 +44,7 @@ library
                         , GHCJS.Electron.Utility
                         -- Node modules
                         , GHCJS.Node.Buffer
+                        , GHCJS.Node.Error
                         , GHCJS.Node.EventEmitter
                         , GHCJS.Node.Stream
                         , GHCJS.Node.Console

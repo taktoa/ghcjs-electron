@@ -4,7 +4,7 @@
 {-# LANGUAGE LambdaCase                 #-}
 {-# LANGUAGE OverloadedStrings          #-}
 
--- FIXME: doc
+-- | FIXME: doc
 module GHCJS.Electron.Accelerator
   ( module Exported
   , module GHCJS.Electron.Accelerator
@@ -65,7 +65,7 @@ data KeyModifier
     --   to the "Command ⌘" key on Mac keyboards.
   deriving (Eq, Show, Read, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 keyModToAccelerator :: KeyModifier -> Text
 keyModToAccelerator KeyModCommand = "Command"
 keyModToAccelerator KeyModControl = "Control"
@@ -85,7 +85,7 @@ data KeyCode
   | KeyCodeMisc       !KeyCodeMisc
   deriving (Eq, Show, Read, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 keyCodeToAccelerator :: KeyCode -> Text
 keyCodeToAccelerator = go >>> fromMaybe (error "This should not happen.")
   where

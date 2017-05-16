@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- FIXME: doc
+-- | FIXME: doc
 module GHCJS.Electron.IPCMain
   ( module Exported
   , module GHCJS.Electron.IPCMain

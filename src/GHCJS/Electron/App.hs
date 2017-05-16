@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- FIXME: doc
+-- | FIXME: doc
 module GHCJS.Electron.App
   ( module Exported
   , module GHCJS.Electron.App
@@ -118,23 +118,23 @@ foreign import javascript safe
                      -- ^ A list of tasks to which the user tasks will be set.
                      -> IO ()
 
--- FIXME: doc
+-- | FIXME: doc
 foreign import javascript safe
   "$r = $1.dock;"
   unsafeGetDock :: App -> IO BrowserWindow
 
--- FIXME: doc
+-- | FIXME: doc
 --   FIXME: may not make sense.
 foreign import javascript safe
   "$1.dock = $2;"
   unsafeSetDock :: App -> BrowserWindow -> IO ()
 
--- FIXME: doc
+-- | FIXME: doc
 foreign import javascript safe
   "$r = $1.commandLine;"
   unsafeGetCommandLine :: App -> IO CommandLine
 
--- FIXME: doc
+-- | FIXME: doc
 --   FIXME: may not make sense.
 foreign import javascript safe
   "$1.commandLine = $2;"
@@ -154,7 +154,7 @@ foreign import javascript safe
                            -- ^ FIXME: doc
                            -> IO Bool
 
--- FIXME: doc
+-- | FIXME: doc
 foreign import javascript safe
   "$1.setAppUserModelId($2);"
   unsafeSetUserModelId :: App

@@ -24,30 +24,30 @@ data Any
 
 --------------------------------------------------------------------------------
 
--- FIXME: doc
+-- | FIXME: doc
 data Platform
-  = PlatLinux   -- FIXME: doc
-  | PlatMacOS   -- FIXME: doc
-  | PlatWindows -- FIXME: doc
+  = PlatLinux   -- ^ FIXME: doc
+  | PlatMacOS   -- ^ FIXME: doc
+  | PlatWindows -- ^ FIXME: doc
   deriving (Eq, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 type Linux = 'PlatLinux
 
--- FIXME: doc
+-- | FIXME: doc
 type Win32 = 'PlatWindows
 
--- FIXME: doc
+-- | FIXME: doc
 type Darwin = 'PlatMacOS
 
 --------------------------------------------------------------------------------
 
--- FIXME: doc
+-- | FIXME: doc
 newtype URL
   = MkURL JSString
   deriving (IsString, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Path
   = MkPath JSString
   deriving (IsString, Generic)
@@ -60,12 +60,12 @@ newtype WindowsPathRef
   = MkWindowsPathRef JSString
   deriving (IsString, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 newtype HTML
   = MkHTML JSString
   deriving (IsString, Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 newtype RTF
   = MkRTF JSString
   deriving (IsString, Generic)
@@ -77,63 +77,63 @@ newtype Accelerator
   = MkAccelerator JSString
   deriving (IsString)
 
--- FIXME: doc
+-- | FIXME: doc
 newtype App
   = MkApp JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Bookmark
   = MkBookmark JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype BrowserWindow
   = MkBrowserWindow JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype BrowserWindowProxy
   = MkBrowserWindowProxy JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Clipboard
   = MkClipboard JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype CommandLine
   = MkCommandLine JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Dialog
   = MkDialog JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Event
   = MkEvent JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Error
   = MkError JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype GlobalShortcut
   = MkGlobalShortcut JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Image
   = MkImage JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype IPCMain
   = MkIPCMain JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype IPCRenderer
   = MkIPCRenderer JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Proxy
   = MkProxy JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 newtype Tray
   = MkTray JSVal
 

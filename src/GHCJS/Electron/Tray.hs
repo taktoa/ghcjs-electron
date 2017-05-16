@@ -8,7 +8,7 @@
 {-# LANGUAGE Rank2Types                #-}
 {-# LANGUAGE TypeFamilies              #-}
 
--- FIXME: doc
+-- | FIXME: doc
 module GHCJS.Electron.Tray
   ( module Exported
   , module GHCJS.Electron.Tray
@@ -21,13 +21,13 @@ import           GHCJS.Types
 
 import           GHCJS.Node.EventEmitter
 
--- FIXME: doc
+-- | FIXME: doc
 data TrayIcon
   = TrayIconImage !Image
   | TrayIconPath  !Path
   deriving (Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 data TrayBalloonOptions
   = MkTrayBalloonOptions
     { icon    :: Maybe TrayIcon
@@ -36,7 +36,7 @@ data TrayBalloonOptions
     }
   deriving (Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 data TrayClickEvent
   = MkTrayClickEvent
     { altKey   :: Bool
@@ -46,7 +46,7 @@ data TrayClickEvent
     }
   deriving (Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 data Point
   = MkPoint
     { pointX :: Int
@@ -54,7 +54,7 @@ data Point
     }
   deriving (Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 data Rectangle
   = MkRectangle
     { rectangleX      :: Int
@@ -64,7 +64,7 @@ data Rectangle
     }
   deriving (Generic)
 
--- FIXME: doc
+-- | FIXME: doc
 data TrayEvent (platforms :: [Platform]) where
   TrayEventClick         :: TrayClickEvent -- ^ event
                          -> Rectangle      -- ^ bounds
@@ -87,7 +87,7 @@ data TrayEvent (platforms :: [Platform]) where
   TrayEventDropLeave     :: TrayEvent '[Darwin]
   TrayEventDropEnd       :: TrayEvent '[Darwin]
 
--- FIXME: doc
+-- | FIXME: doc
 data SomeTrayEvent
   = forall (platforms :: [Platform]).
     MkSomeTrayEvent (TrayEvent platforms)

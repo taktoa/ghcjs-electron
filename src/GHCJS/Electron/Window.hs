@@ -1,5 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
+-- | FIXME: doc
 module GHCJS.Electron.Window where
 
 import           GHCJS.Electron.Types

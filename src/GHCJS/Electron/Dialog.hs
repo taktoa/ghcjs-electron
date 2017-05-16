@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 
--- FIXME: doc
+-- | FIXME: doc
 module GHCJS.Electron.Dialog
   ( module Exported
   , module GHCJS.Electron.Dialog

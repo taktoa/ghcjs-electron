@@ -30,18 +30,18 @@ import           GHCJS.Electron.Types
 
 import           JavaScript.Object
 
--- FIXME: doc
+-- | FIXME: doc
 newtype CrashReporter
   = MkCrashReporter JSVal
 
--- FIXME: doc
+-- | FIXME: doc
 data CrashReport
   = MkCrashReport
     { _date :: Text
     , _ID   :: Int
     }
 
--- FIXME: doc
+-- | FIXME: doc
 data CrashReporterOptions
   = MkCrashReporterOptions
     { _companyName         :: Maybe Text
@@ -58,7 +58,7 @@ data CrashReporterOptions
       -- ^ An arbitrary JSON object to send with the crash report.
     }
 
--- FIXME: doc
+-- | FIXME: doc
 start :: CrashReporterOptions -> IO CrashReporter
 start = undefined -- FIXME: implement
 

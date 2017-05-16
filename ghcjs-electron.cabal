@@ -106,6 +106,7 @@ library
                         , GHCJS.Electron.WebRequest
                         , GHCJS.Electron.Window
     other-modules:        GHCJS.Array
+                        , GHCJS.Callback
     ghc-options:          -Wall -g
                           -fno-warn-type-defaults
                           -fno-warn-unused-do-bind
